@@ -1,6 +1,8 @@
 import pickle
 import numpy as np
 import pandas as pd
+import lightgbm as lgb
+
 from flask import Flask, request, app, jsonify, url_for, render_template
 
 # Initialize Flask app
