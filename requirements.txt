@@ -5,3 +5,4 @@ Flask
 seaborn
 matplotlib
 gunicorn
+lightgbm
