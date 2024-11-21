@@ -13,43 +13,36 @@ model = pickle.load(open('lgbm_model.pkl','rb'))
 def home():
     return render_template('home.html')
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predict_demand', methods=['POST'])
+def predict_demand():
     try:
-        # Extract JSON data from the request
-        data = request.get_json()
-        print(data)  
+        # Extract form inputs
+        features = [
+            float(request.form.get('zone')),
+            float(request.form.get('year')),
+            float(request.form.get('month')),
+            float(request.form.get('date')),
+            float(request.form.get('hour')),
+            float(request.form.get('farePerMile')),
+            float(request.form.get('avgFlowSpeed_mph')),
+            float(request.form.get('weather_category')),
+            float(request.form.get('n_minus_1_hour_trips')),
+            float(request.form.get('n_minus_2_hour_trips')),
+            float(request.form.get('n_minus_3_hour_trips'))
+        ]
 
-        # Example: Extracting features
-        features = data.get("features")  
-        
+        # Prepare feature array
+        features_array = np.array([features])
 
-        # Validate that features is a list of numbers
-        if not isinstance(features, list):
-            return jsonify({"error": "Invalid input format. 'features' must be a list of numbers."}), 400
+        # Make prediction
+        prediction = model.predict(features_array)[0]
 
-        try:
-            features = [float(f) for f in features]
-        except ValueError:
-            return jsonify({"error": "All features must be numbers."}), 400
-
-
-        if features is None:
-            return jsonify({"error": "No features provided"}), 400
-
-        # Convert to NumPy array and reshape
-        import numpy as np
-        features = np.array(features).reshape(1, -1)  
-        print(features)  
-
-        # Make a prediction
-        prediction = model.predict(features)
-        return jsonify({"prediction": prediction.tolist()})
+        # Render template with prediction
+        return render_template('home.html', prediction=round(prediction, 2))
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
+        # Render template with error
+        return render_template('home.html', error=str(e))
 
 # Run the Flask app
 if __name__ == '__main__':
