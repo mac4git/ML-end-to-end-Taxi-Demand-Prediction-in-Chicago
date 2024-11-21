@@ -18,10 +18,10 @@ def predict():
     try:
         # Extract JSON data from the request
         data = request.get_json()
-        print(data)  # Debugging: Ensure data is received correctly
+        print(data)  
 
         # Example: Extracting features
-        features = data.get("features")  # Replace "features" with the actual key
+        features = data.get("features")  
         
 
         # Validate that features is a list of numbers
@@ -39,8 +39,8 @@ def predict():
 
         # Convert to NumPy array and reshape
         import numpy as np
-        features = np.array(features).reshape(1, -1)  # Assuming it's a single sample
-        print(features)  # Debugging: Check the reshaped array
+        features = np.array(features).reshape(1, -1)  
+        print(features)  
 
         # Make a prediction
         prediction = model.predict(features)
@@ -48,6 +48,8 @@ def predict():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 
 # Run the Flask app
 if __name__ == '__main__':
