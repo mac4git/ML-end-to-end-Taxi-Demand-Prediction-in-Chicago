@@ -27,4 +27,8 @@ End to End Taxi Demand Prediction Machine Learning Model using Visual studio, Gi
 >   - Better delete last n previous commits that you don't want <git reset --hard HEAD~2> # to delete last 2 commits. But after the resetting step, push the new changes using <git push origin main --force>
 >
 
+> Step 5: Create app.py and include the Flask code to retrieve features and perform model prediction
+
+> Step 6: Run the app.py file using <python app.py>
+
 
