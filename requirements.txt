@@ -4,3 +4,4 @@ pandas
 Flask
 seaborn
 matplotlib
+gunicorn
