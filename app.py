@@ -13,36 +13,76 @@ model = pickle.load(open('lgbm_model.pkl','rb'))
 def home():
     return render_template('home.html')
 
+@app.route('/predict_api', methods=['POST'])
+def predict_api():
+    try:
+        # Log the received JSON
+        print("Received JSON:", request.json)
+
+        # Get the 'features' dictionary from the request
+        features = request.json.get('features')
+        if features is None:
+            return jsonify({"error": "Missing 'features' key in the request JSON"}), 400
+
+        # Validate 'features' is a dictionary
+        if not isinstance(features, dict):
+            return jsonify({"error": "'features' must be a dictionary"}), 400
+
+        # Log the extracted features
+        print("Extracted features:", features)
+
+        # Check for missing values
+        if any(value is None for value in features.values()):
+            return jsonify({"error": "All fields are required. Please fill out the form completely."}), 400
+
+        # Convert features to a NumPy array
+        new_data = np.array(list(features.values())).reshape(1, -1)
+
+        # Make prediction
+        output = model.predict(new_data)
+
+        # Return the prediction
+        return jsonify({"prediction": float(output[0])})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
 @app.route('/predict_demand', methods=['POST'])
 def predict_demand():
     try:
-        # Extract form inputs
-        features = [
-            float(request.form.get('zone')),
-            float(request.form.get('year')),
-            float(request.form.get('month')),
-            float(request.form.get('date')),
-            float(request.form.get('hour')),
-            float(request.form.get('farePerMile')),
-            float(request.form.get('avgFlowSpeed_mph')),
-            float(request.form.get('weather_category')),
-            float(request.form.get('n_minus_1_hour_trips')),
-            float(request.form.get('n_minus_2_hour_trips')),
-            float(request.form.get('n_minus_3_hour_trips'))
+        fields = [
+            'zone', 'year', 'month', 'date', 'hour', 
+            'farePerMile', 'avgFlowSpeed_mph', 'weather_category', 
+            'n_minus_1_hour_trips', 'n_minus_2_hour_trips', 'n_minus_3_hour_trips'
         ]
 
-        # Prepare feature array
-        features_array = np.array([features])
+        # Extract all fields from the form
+        form_data = {field: request.form.get(field) for field in fields}
+        print("Received Form Data:", form_data)  # Debugging log
 
-        # Make prediction
+        # Check for missing or empty fields
+        missing_fields = [field for field, value in form_data.items() if value is None or value.strip() == ""]
+        if missing_fields:
+            return render_template(
+                'home.html',
+                error=f"Missing values for fields: {', '.join(missing_fields)}"
+            )
+
+        # Convert all fields to float
+        features = [float(form_data[field]) for field in fields]
+
+        # Use features for prediction (example)
+        features_array = np.array(features).reshape(1, -1)
         prediction = model.predict(features_array)[0]
 
-        # Render template with prediction
         return render_template('home.html', prediction=round(prediction, 2))
 
     except Exception as e:
-        # Render template with error
-        return render_template('home.html', error=str(e))
+        return render_template('home.html', error=f"Error: {str(e)}")
+
+
 
 # Run the Flask app
 if __name__ == '__main__':
