@@ -1,4 +1,3 @@
-# demo for laltu
 # ML-end-to-end-Taxi-Demand-Prediction-in-Chicago
 End to End Taxi Demand Prediction Machine Learning Model using Visual studio, Github actions, Flask, Heroku, and Dockers
 
