@@ -188,5 +188,36 @@
         </div>
         {% endif %}
     </div>
+
+        <!-- Embed Power BI Report -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var models = window['powerbi-client'].models;
+    
+                // Power BI Configuration
+                var config = {
+                    type: 'report',
+                    tokenType: models.TokenType.Embed,
+                    accessToken: "{{ embed_token }}",  // Flask will inject this variable
+                    embedUrl: "{{ embed_url }}",      // Flask will inject this variable
+                    settings: {
+                        panes: {
+                            filters: {
+                                visible: false
+                            },
+                            pageNavigation: {
+                                visible: true
+                            }
+                        }
+                    }
+                };
+    
+                // Embed Power BI Report
+                var powerbiContainer = document.getElementById('powerbi-frame');
+                var powerbi = new window.powerbi.PowerBI();
+                powerbi.embed(powerbiContainer, config);
+            });
+        </script>
+    
 </body>
 </html>
