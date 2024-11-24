@@ -13,7 +13,7 @@ model = pickle.load(open('lgbm_model.pkl','rb'))
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home2.html')
 
 @app.route('/predict_api', methods=['POST'])
 def predict_api():
@@ -68,7 +68,7 @@ def predict_demand():
         missing_fields = [field for field, value in form_data.items() if value is None or value.strip() == ""]
         if missing_fields:
             return render_template(
-                'home.html',
+                'home2.html',
                 error=f"Missing values for fields: {', '.join(missing_fields)}"
             )
 
@@ -79,10 +79,10 @@ def predict_demand():
         features_array = np.array(features).reshape(1, -1)
         prediction = model.predict(features_array)[0]
 
-        return render_template('home.html', prediction=round(prediction, 2))
+        return render_template('home2.html', prediction=round(prediction, 2))
 
     except Exception as e:
-        return render_template('home.html', error=f"Error: {str(e)}")
+        return render_template('home2.html', error=f"Error: {str(e)}")
 
 
 
