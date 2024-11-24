@@ -8,141 +8,172 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #fff200;
+            background-color: #f9f9f9;
         }
 
-        header {
+        /* Header */
+        .header {
             background-color: #000;
-            color: #fff200;
+            color: #FFD700;
             text-align: center;
             padding: 20px 0;
             font-size: 24px;
             font-weight: bold;
         }
 
+        /* Main container */
         .container {
             display: flex;
-            height: calc(100vh - 80px);
-        }
-
-        .input-section {
-            flex: 1;
+            flex-direction: row;
+            justify-content: space-between;
             padding: 20px;
+            gap: 20px;
+        }
+
+        /* Input form */
+        .input-section {
+            width: 40%;
             background-color: #fff;
-            border-right: 5px solid #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
         }
 
-        .input-section h2 {
-            color: #000;
-            margin-bottom: 20px;
-        }
-
-        .input-section form {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .input-section label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
+        .input-section h3 {
+            margin: 0 0 20px;
             color: #000;
         }
 
-        .input-section input,
-        .input-section select {
-            width: 100%;
-            padding: 10px;
+        .form-group {
             margin-bottom: 15px;
-            border: 2px solid #000;
-            border-radius: 5px;
-            background-color: #fff200;
         }
 
-        .input-section button {
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 10px;
-            background-color: #000;
-            color: #fff200;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input {
+            height: 30px;
+        }
+
+        .form-group select {
+            height: 35px;
+        }
+
+        .submit-button {
+            background-color: #FFD700;
+            color: #000;
             border: none;
-            border-radius: 5px;
+            padding: 10px 15px;
             font-size: 16px;
             font-weight: bold;
+            border-radius: 4px;
             cursor: pointer;
-            transition: transform 0.3s;
+            width: 100%;
         }
 
-        .input-section button:hover {
-            transform: scale(1.05);
-        }
-
-        .visual-section {
-            flex: 2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .submit-button:hover {
             background-color: #000;
+            color: #FFD700;
         }
 
-        .visual-section iframe {
-            width: 90%;
-            height: 90%;
-            border: 5px solid #fff200;
-            border-radius: 10px;
+        /* Power BI iframe */
+        .iframe-section {
+            width: 55%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .iframe-section iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <header>
+
+    <!-- Header -->
+    <div class="header">
         TAXI DEMAND PREDICTION IN CHICAGO
-    </header>
+    </div>
+
+    <!-- Main content container -->
     <div class="container">
+
+        <!-- Input form section -->
         <div class="input-section">
-            <h2>Enter Prediction Details</h2>
+            <h3>Enter Prediction Details</h3>
             <form>
-                <label for="zone">Zone</label>
-                <input type="text" id="zone" name="zone" placeholder="Enter zone">
-
-                <label for="year">Year</label>
-                <input type="number" id="year" name="year" placeholder="Enter year">
-
-                <label for="month">Month</label>
-                <input type="number" id="month" name="month" placeholder="Enter month">
-
-                <label for="date">Date</label>
-                <input type="number" id="date" name="date" placeholder="Enter date">
-
-                <label for="hour">Hour</label>
-                <input type="number" id="hour" name="hour" placeholder="Enter hour">
-
-                <label for="farePerMile">Fare Per Mile</label>
-                <input type="text" id="farePerMile" name="farePerMile" placeholder="Enter fare per mile">
-
-                <label for="avgFlowSpeed_mph">Average Flow Speed (mph)</label>
-                <input type="text" id="avgFlowSpeed_mph" name="avgFlowSpeed_mph" placeholder="Enter average flow speed">
-
-                <label for="weather_category">Weather Category</label>
-                <input type="text" id="weather_category" name="weather_category" placeholder="Enter weather category">
-
-                <label for="n_minus_1_hour_trips">Trips 1 Hour Ago</label>
-                <input type="number" id="n_minus_1_hour_trips" name="n_minus_1_hour_trips" placeholder="Enter trips 1 hour ago">
-
-                <label for="n_minus_2_hour_trips">Trips 2 Hours Ago</label>
-                <input type="number" id="n_minus_2_hour_trips" name="n_minus_2_hour_trips" placeholder="Enter trips 2 hours ago">
-
-                <label for="n_minus_3_hour_trips">Trips 3 Hours Ago</label>
-                <input type="number" id="n_minus_3_hour_trips" name="n_minus_3_hour_trips" placeholder="Enter trips 3 hours ago">
-
-                <button type="submit">Predict</button>
+                <div class="form-group">
+                    <label for="zone">Zone:</label>
+                    <input type="text" id="zone" name="zone">
+                </div>
+                <div class="form-group">
+                    <label for="year">Year:</label>
+                    <input type="number" id="year" name="year">
+                </div>
+                <div class="form-group">
+                    <label for="month">Month:</label>
+                    <input type="number" id="month" name="month">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="number" id="date" name="date">
+                </div>
+                <div class="form-group">
+                    <label for="hour">Hour:</label>
+                    <input type="number" id="hour" name="hour">
+                </div>
+                <div class="form-group">
+                    <label for="farePerMile">Fare Per Mile:</label>
+                    <input type="number" id="farePerMile" name="farePerMile">
+                </div>
+                <div class="form-group">
+                    <label for="avgFlowSpeed">Avg Flow Speed (mph):</label>
+                    <input type="number" id="avgFlowSpeed" name="avgFlowSpeed">
+                </div>
+                <div class="form-group">
+                    <label for="weatherCategory">Weather Category:</label>
+                    <input type="text" id="weatherCategory" name="weatherCategory">
+                </div>
+                <div class="form-group">
+                    <label for="n_minus_1_hour_trips">Trips (1 hour ago):</label>
+                    <input type="number" id="n_minus_1_hour_trips" name="n_minus_1_hour_trips">
+                </div>
+                <div class="form-group">
+                    <label for="n_minus_2_hour_trips">Trips (2 hours ago):</label>
+                    <input type="number" id="n_minus_2_hour_trips" name="n_minus_2_hour_trips">
+                </div>
+                <div class="form-group">
+                    <label for="n_minus_3_hour_trips">Trips (3 hours ago):</label>
+                    <input type="number" id="n_minus_3_hour_trips" name="n_minus_3_hour_trips">
+                </div>
+                <button type="submit" class="submit-button">Predict</button>
             </form>
         </div>
-        <div class="visual-section">
-            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiMjdkMzM3MTktOTdmMi00Y2Q4LWJkNzEtOGI0YzRkYTMxNTExIiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" frameborder="0" allowfullscreen></iframe>
+
+        <!-- Power BI iframe section -->
+        <div class="iframe-section">
+            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiMjdkMzM3MTktOTdmMi00Y2Q4LWJkNzEtOGI0YzRkYTMxNTExIiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" title="Power BI Visualization"></iframe>
         </div>
+
     </div>
+
 </body>
 </html>
