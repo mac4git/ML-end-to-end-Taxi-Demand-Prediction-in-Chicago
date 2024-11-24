@@ -1,721 +1,148 @@
 <!DOCTYPE html>
-<html lang="en-US" class="hide-scroll">
-<head> 
-    <title>Fastest taxi cars HTML Template Live Demo</title>
-    <meta name="Keywords">
-    <meta name="Description">
-    
-
-    
-    
-
-
-    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no,width=device-width">
-
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Predict Taxi Demand in Chicago </title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f9;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
-            .form-container {
-                background: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                padding: 30px 40px;
-                width: 800px;
-            }
-            .form-container h2 {
-                margin-bottom: 20px;
-                text-align: center;
-                color: #333333;
-            }
-            .form-group-container {
-                display: flex;
-                justify-content: space-between;
-                gap: 20px; /* Increase the gap between columns */
-            }
-            .form-column {
-                width: 48%;
-            }
-            .form-group {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 15px;
-            }
-            .form-group label {
-                width: 45%; /* Increase label width for longer text */
-                font-weight: bold;
-                color: #555555;
-                white-space: nowrap; /* Prevent text wrapping */
-                overflow: hidden;
-                text-overflow: ellipsis; /* Add ellipsis for very long text */
-            }
-            .form-group input {
-                width: 50%; /* Adjust input width to match alignment */
-                padding: 8px;
-                border: 1px solid #cccccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            .form-group input:focus {
-                border-color: #007bff;
-                outline: none;
-            }
-            .submit-btn {
-                background-color: #007bff;
-                color: #ffffff;
-                border: none;
-                padding: 10px;
-                width: 100%;
-                border-radius: 4px;
-                font-size: 16px;
-                cursor: pointer;
-                margin-top: 20px;
-            }
-            .submit-btn:hover {
-                background-color: #0056b3;
-            }
-            .output-container {
-                margin-top: 20px;
-                text-align: center;
-                color: #333333;
-                font-size: 16px;
-                font-weight: bold;
-            }
-        </style>
-    </head>
-    
-    <body>
-    <h2> Visuals </h2>
-    <iframe title="fare per mile visual" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMjdkMzM3MTktOTdmMi00Y2Q4LWJkNzEtOGI0YzRkYTMxNTExIiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" frameborder="0" allowFullScreen="true"></iframe>
-    </body>
-    
-    <body>
-        <div class="form-container">
-            <h2> Predict Taxi Demand in Chicago </h2>
-            <form action="/predict_demand" method="POST">
-                <div class="form-group-container">
-                    <!-- Left Column -->
-                    <div class="form-column">
-                        <div class="form-group">
-                            <label for="zone">Zone</label>
-                            <input type="number" id="zone" name="zone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="year">Year</label>
-                            <input type="number" id="year" name="year" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="month">Month</label>
-                            <input type="number" id="month" name="month" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="number" id="date" name="date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="hour">Hour</label>
-                            <input type="number" id="hour" name="hour" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="farePerMile">Fare Per Mile</label>
-                            <input type="number" step="0.01" id="farePerMile" name="farePerMile" required>
-                        </div>
-                    </div>
-                    <!-- Right Column -->
-                    <div class="form-column">
-                        <div class="form-group">
-                            <label for="avgFlowSpeed_mph">Avg Flow Speed (mph)</label>
-                            <input type="number" step="0.01" id="avgFlowSpeed_mph" name="avgFlowSpeed_mph" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="weather_category">Weather Category</label>
-                            <input type="number" id="weather_category" name="weather_category" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="n_minus_1_hour_trips">Trips (n-1 hr)</label>
-                            <input type="number" id="n_minus_1_hour_trips" name="n_minus_1_hour_trips" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="n_minus_2_hour_trips">Trips (n-2 hr)</label>
-                            <input type="number" id="n_minus_2_hour_trips" name="n_minus_2_hour_trips" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="n_minus_3_hour_trips">Trips (n-3 hr)</label>
-                            <input type="number" id="n_minus_3_hour_trips" name="n_minus_3_hour_trips" required>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="submit-btn">Predict Demand</button>
-            </form>
-            <!-- Placeholder for displaying the prediction -->
-            {% if prediction %}
-            <div class="output-container">
-                Prediction: {{ prediction }}
-            </div>
-            {% elif error %}
-            <div class="output-container" style="color: red;">
-                Error: {{ error }}
-            </div>
-            {% endif %}
-        </div>
-    </body>
-
-<script src="//capp.nicepage.com/1662e8971b75e227453abf2b0c0bb260dcad244d/main-libs.js" ></script>
-<link href="//capp.nicepage.com/1662e8971b75e227453abf2b0c0bb260dcad244d/main-libs.css" rel="stylesheet" />
-
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto|Open+Sans:200,300,400,700,800,900&amp;subset=latin" rel="preload" as="font" />
-
-
-
-
-
-<script>
-    window.isAuthenticated = 0;
-    window.useExternalGtmCode = 0;
-    window.clientUserId = 0;
-    window.clientUserName = '';
-    window.userCountryCode = '';
-    window.logPageEvent = 1;
-    window.userHasAdsParams = 0;
-    window.utmSourceFromReferrer = 0;
-    window.currentLang = '';
-    window.baseUrl = 'html-templates';
-    window.currentUrl = 'html-templates';
-    window.np_userId = '';
-    window.isAmplitudeInitialized = false;
-    window.sha256Email = '';
-
-    function getCookieOrLocalStorage(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0) {
-                return c.substring(nameEQ.length, c.length);
-            }
-        }
-        var lsValue = localStorage.getItem(name);
-        return !!lsValue;
-    }
-
-    function sendAnalyticsData(eventType, props, cb) {
-        var json = { data: {} };
-        json.userToken = np_userId;
-        json.data.adsParams = $.cookie('AdsParameters');
-        json.data.ga = $.cookie('_ga');
-        json.data.gac = $.cookie('_gac_UA-88868916-2');
-        json.data.userAgent = navigator.userAgent;
-        json.data.eventType = eventType;
-        json.data.props = props;
-        $.ajax({
-            'type': 'POST',
-            'url': '/Feedback/SendAdsLog',
-            'contentType': 'application/json; charset=utf-8',
-            'data': JSON.stringify(json),
-            'dataType': 'json',
-            'complete': cb || function() {}
-        });
-    }
-
-    function initializeAmplitudeUser() {
-        if (isAmplitudeInitialized) {
-            return;
-        }
-        isAmplitudeInitialized = true;
-
-        if (clientUserId > 0)
-        {
-            identifyAmplitudeUser(clientUserId, clientUserName);
-        }
-        else
-        {
-            identifyAmplitudeUser(null);
-        }
-    }
-
-    function sendAmplitudeAnalyticsData(eventName, eventProperties, userProperties, callback_function) {
-        initializeAmplitudeUser();
-
-        if (userProperties) {
-            if(userProperties.utm_source || userProperties.utm_campaign) {
-                var identify = new amplitude.Identify();
-                identify.setOnce("utm_campaign", userProperties.utm_campaign);
-                identify.setOnce("utm_source", userProperties.utm_source);
-                identify.setOnce("utm_content", userProperties.utm_content);
-                identify.setOnce("utm_group", userProperties.utm_group);
-                identify.setOnce("utm_term", userProperties.utm_term);
-                identify.setOnce("utm_page", userProperties.utm_page);
-                identify.setOnce("utm_page2", userProperties.utm_page);
-                identify.setOnce("referrer", userProperties.referrer);
-
-                amplitude.getInstance().identify(identify);
-
-                userProperties.utm_source_last = userProperties.utm_source;
-                userProperties.utm_campaign_last = userProperties.utm_campaign;
-                userProperties.utm_content_last = userProperties.utm_content;
-                userProperties.utm_group_last = userProperties.utm_group;
-                userProperties.utm_term_last = userProperties.utm_term;
-                userProperties.utm_page_last = userProperties.utm_page;
-            }
-
-            var userProps = objectWithoutProperties(userProperties, ["utm_campaign", "utm_source","utm_content", "utm_term", "utm_page", "utm_group", "referrer"]);
-            amplitude.getInstance().setUserProperties(userProps);
-        }
-
-        if (!eventProperties) {
-            eventProperties = {};
-        }
-
-        eventProperties.WebSite = 'true';
-        eventProperties.IsAuthenticated = window.isAuthenticated;
-        eventProperties.country_code = getCountryCode();
-        eventProperties.lang = window.currentLang || '';
-
-        var fullPageUrl = window.location.pathname.split('?')[0];
-        eventProperties.full_page_url = fullPageUrl;
-        eventProperties.page_url = clearPageUrl(fullPageUrl);
-
-        if (typeof callback_function === 'function') {
-            amplitude.getInstance().logEvent(eventName, eventProperties, callback_function);
-        } else {
-            amplitude.getInstance().logEvent(eventName, eventProperties);
-        }
-    }
-
-    function identifyAmplitudeUser(userId, token) {
-        if (userId) {
-            amplitude.getInstance().setUserProperties({
-                "Token": token,
-                "UserId": userId
-            });
-        }
-
-        var identify = new amplitude.Identify();
-        amplitude.getInstance().identify(identify);
-        if (userId) {
-            amplitude.getInstance().setUserId(userId);
-        }
-    }
-
-    function getUtmParamsFromUrl() {
-        var hash = window.location.hash;
-        var url = new URL(window.location.href);
-        if (hash && hash.indexOf('utm_') >= 0) {
-            url = new URL(window.location.origin + window.location.pathname + hash.replace('#', '?'));
-        }
-
-        if (!url.searchParams) {
-            return '';
-        }
-        return getUtmParams(url);
-    }
-
-    function hasGoogleIdFromUrl() {
-        var url = new URL(window.location.href);
-        if (!url.searchParams) {
-            return false;
-        }
-        return !!url.searchParams.get('gclid');
-    }
-
-    function sendAnalyticsFromUrl(referrer, pageType) {
-        var urlIsAvailable = typeof URL === "function" || (navigator.userAgent.indexOf('MSIE') !== -1 && typeof URL === 'object');
-        if (!urlIsAvailable) {
-            return;
-        }
-
-        var utmParams = getUtmParamsFromUrl();
-        if (!utmParams) {
-            return;
-        }
-
-        var gclidFromUrl = utmParams.gclid;
-        var utmParamsFromUrl = !!utmParams.utmSource || !!utmParams.utmCampaign || !!utmParams.gclid;
-        if (!utmParamsFromUrl && userHasAdsParams)
-        {
-            utmParams = getUtmParamsFromCookie();
-        }
-
-        var canLog = canLogToAmplitude(pageType);
-        if (utmParamsFromUrl || utmSourceFromReferrer) {
-            var fullPageUrl = window.location.pathname.split('?')[0];
-            var pageUrl = clearPageUrl(fullPageUrl);
-            var userProps = {
-                "utm_source": utmParams.utmSource,
-                "utm_campaign": utmParams.utmCampaign,
-                "utm_content": utmParams.utmContent,
-                "utm_group": utmParams.utmGroup,
-                "utm_term": utmParams.utmTerm,
-                "utm_page": getUtmPageValue(pageUrl),
-                "utm_lang": window.currentLang || '',
-                "referrer": referrer
-            };
-
-            if (gclidFromUrl) {
-                var landingUrl = pageUrl.startsWith('/') && pageUrl !== '/' ? pageUrl.substr(1) : pageUrl;
-                userProps.landing_page = landingUrl;
-
-                var event = {
-                    'Page': landingUrl,
-                    'Url': window.location.href,
-                    'utm_campaign_event': utmParams.utmCampaign,
-                    'utm_group_event': utmParams.utmGroup
-
-                }
-                sendAmplitudeAnalyticsData('Landing Page', event, userProps);
-            } else {
-                var eventProps = {
-                    "utm_source": utmParams.utmSource,
-                    "utm_campaign": utmParams.utmCampaign,
-                    "utm_content": utmParams.utmContent,
-                    "utm_group": utmParams.utmGroup,
-                    "utm_term": utmParams.utmTerm
-                };
-
-                if (utmParams.utmSource === "elastic") {
-                    sendAmplitudeAnalyticsData('Email Click', eventProps);
-                }
-
-                if (canLog) {
-                    sendAmplitudeAnalyticsData('Campaign', eventProps, userProps);
-                }
-            }
-        }
-
-        if (logPageEvent && canLog || (pageType === 'Pricing Page' && window.isValidCountry(true))) {
-            var pageEventProps = {
-                'type': pageType,
-                'accepted_country': isValidCountry(),
-                'force_log': !canLog
-            };
-
-            if (utmParams.gclid) {
-                pageEventProps.googleClickId = utmParams.gclid;
-            }
-
-            sendAmplitudeAnalyticsData('Page View', pageEventProps);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        if (location.href.indexOf('/frame/') === -1 && window.location.href.indexOf('skipCookie') === -1) {
-            PureCookie.initCookieConsent();
-        }
-        setCountryCode('https://location.nicepagesrv.com/country');
-        setUserIdCookie();
-
-        var referrer = '';
-        var pageType = 'Template Page Preview';
-        sendAnalyticsFromUrl(referrer, pageType);
-    });
-</script>
-
-    <script>
-        // Define dataLayer and the gtag function.
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        var consentDefaultValue = 'granted';
-        gtag('consent', 'default', {
-            'ad_storage': consentDefaultValue,
-            'ad_user_data': consentDefaultValue,
-            'ad_personalization': consentDefaultValue,
-            'analytics_storage': consentDefaultValue
-        });
-        
-        if (hasGoogleIdFromUrl()) {
-            useExternalGtmCode = 1;
-        }
-    </script>
-    <!-- Google Tag Manager -->
-    <script>
-        if (useExternalGtmCode) {
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://load.api9.nicepage.com/nldlswob.js?st='+i+dl+'';f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','W76XGFR');
-        } else {
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W76XGFR');
-        }
-    </script>
-    <!-- End Google Tag Manager -->
-    <!-- Facebook Pixel Code -->
-        <script>
-            if(window.hideFacebookPixelCode !== true) {
-                !function (f, b, e, v, n, t, s) {
-                    if (f.fbq) return; n = f.fbq = function () {
-                        n.callMethod ?
-                            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-                    };
-                    if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-                    n.queue = []; t = b.createElement(e); t.async = !0;
-                    t.src = v; s = b.getElementsByTagName(e)[0];
-                    s.parentNode.insertBefore(t, s)
-                }(window, document, 'script',
-                    'https://connect.facebook.net/en_US/fbevents.js');
-
-                var fbInitOptions = { em: '' };
-                if (clientUserId > 0) {
-                    fbInitOptions.external_id = clientUserId;
-                }
-
-                fbq('init', '251025992170426', fbInitOptions);
-                fbq('track', 'PageView');
-            }
-        </script>
-        <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=251025992170426&ev=PageView&noscript=1" /></noscript>
-    <!-- End Facebook Pixel Code -->
-
-<!-- Amplitude Code -->
-<script type="text/javascript">
-    (function(e,t){var n=e.amplitude||{_q:[],_iq:{}};var r=t.createElement("script")
-            ;r.type="text/javascript"
-            ;r.integrity="sha384-d/yhnowERvm+7eCU79T/bYjOiMmq4F11ElWYLmt0ktvYEVgqLDazh4+gW9CKMpYW"
-            ;r.crossOrigin="anonymous";r.async=true
-            ;r.src="https://cdn.amplitude.com/libs/amplitude-5.2.2-min.gz.js"
-            ;r.onload=function(){if(!e.amplitude.runQueuedFunctions){
-                console.log("[Amplitude] Error: could not load SDK")}}
-            ;var i=t.getElementsByTagName("script")[0];i.parentNode.insertBefore(r,i)
-            ;function s(e,t){e.prototype[t]=function(){
-            this._q.push([t].concat(Array.prototype.slice.call(arguments,0)));return this}}
-        var o=function(){this._q=[];return this}
-            ;var a=["add","append","clearAll","prepend","set","setOnce","unset"]
-            ;for(var u=0;u<a.length;u++){s(o,a[u])}n.Identify=o;var c=function(){this._q=[]
-                ;return this}
-            ;var l=["setProductId","setQuantity","setPrice","setRevenueType","setEventProperties"]
-            ;for(var p=0;p<l.length;p++){s(c,l[p])}n.Revenue=c
-            ;var d=["init","logEvent","logRevenue","setUserId","setUserProperties","setOptOut","setVersionName","setDomain","setDeviceId","setGlobalUserProperties","identify","clearUserProperties","setGroup","logRevenueV2","regenerateDeviceId","groupIdentify","onInit","logEventWithTimestamp","logEventWithGroups","setSessionId","resetSessionId"]
-            ;function v(e){function t(t){e[t]=function(){
-                e._q.push([t].concat(Array.prototype.slice.call(arguments,0)))}}
-            for(var n=0;n<d.length;n++){t(d[n])}}v(n);n.getInstance=function(e){
-                e=(!e||e.length===0?"$default_instance":e).toLowerCase()
-                    ;if(!n._iq.hasOwnProperty(e)){n._iq[e]={_q:[]};v(n._iq[e])}return n._iq[e]}
-            ;e.amplitude=n})(window,document);
-    amplitude.getInstance().init("878f4709123a5451aff838c1f870b849");
-</script>
-
-<script>
-var shareasaleSSCID=shareasaleGetParameterByName("sscid");function shareasaleSetCookie(e,a,r,s,t){if(e&&a){var o,n=s?"; path="+s:"",i=t?"; domain="+t:"",S="";r&&((o=new Date).setTime(o.getTime()+r),S="; expires="+o.toUTCString()),document.cookie=e+"="+a+S+n+i+"; SameSite=None;Secure"}}function shareasaleGetParameterByName(e,a){a||(a=window.location.href),e=e.replace(/[\[\]]/g,"\\$&");var r=new RegExp("[?&]"+e+"(=([^&#]*)|&|#|$)").exec(a);return r?r[2]?decodeURIComponent(r[2].replace(/\+/g," ")):"":null}shareasaleSSCID&&shareasaleSetCookie("shareasaleSSCID",shareasaleSSCID,94670778e4,"/");
-</script>
-
-
-
-
-
-<link rel="preconnect" href="https://images01.nicepagecdn.com" />
-<link rel="preconnect" href="https://csite.nicepage.com" />
-
-<!--[if lt IE 9]>
-    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
-
-
-
-
-
-
-    <script>
-        window.serverSettings = {
-            fbAppId: '290410448063109',
-            googleAppId: '13150095650-mo8psu2colep6uv90a2mu6r87u87s35a.apps.googleusercontent.com'
-        };
-    </script>
-    <script src="https://accounts.google.com/gsi/client?hl=en" async></script>
-    <script src="//csite.nicepage.com/Scripts/Site/auth-common.js?version=1662e8971b75e227453abf2b0c0bb260dcad244d" defer></script>
-
-
-    
-    <meta name="robots" content="noindex, nofollow">
-    <script type="text/javascript">
-        var device = 'desktop';
-        function init($) {
-            $('#previewDesktopBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-
-            $('#previewLaptopBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-            $('#previewTabletBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-            $('#previewPhoneHorizontalBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-            $('#previewPhoneBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-
-            detectActiveResponsiveButton();
-        }
-
-        if (jQuery.isReady) {
-            init(jQuery);
-        } else {
-            jQuery(function ($) {
-                init($);
-            });
-        }
-
-        function setActiveResponsiveButton(btn) {
-            $(".page-preview-header > a").removeClass("active");
-            $(btn).addClass("active");
-        }
-
-        function detectActiveResponsiveButton() {
-            var d = device;
-            if (!d) {
-                d = 'desktop';
-            }
-            $("#preview" + d.charAt(0).toUpperCase() + d.substr(1) + "Btn").click();
-        }
-
-        function getDataPreviewSizeAttr(el) {
-            return el.closest("[data-preview-size]").attr("data-preview-size");
-        }
-
-        function setLivePreviewFrameSize(srcEl) {
-            var getScrollbarWidth = function () {
-                var s = $('<div style="width:100px;height:100px;overflow:scroll;visibility:hidden;position:absolute;top:-99999px"><div style="height:200px;"></div></div>')
-                    .appendTo("body");
-                var res = s.width() - s.find("div").last().width();
-                s.remove();
-                return res;
-            };
-            var attr = getDataPreviewSizeAttr(srcEl);
-            $('#livePreviewFrame').width(attr.indexOf("%") !== -1 ? attr : parseInt(attr, 10) + getScrollbarWidth());
-        }
-
-    </script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxi Demand Prediction</title>
     <style>
-        .dialog-wrapper {
-            display: none !important;
-        }
-
-        .wrap,
-        #main {
-            height: 100vh;
-            margin: 0 !important;
-        }
-
-        iframe {
-            display: none;
-        }
-
-
-        html,
         body {
-            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff200;
         }
 
-        .page-preview {
-            border-radius: 0;
-            height: 100%;
-        }
-
-        .page-preview-header {
-            background: #f2f2f2;
-            border: none;
-            height: 70px;
-            position: relative;
+        header {
+            background-color: #000;
+            color: #fff200;
             text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
         }
 
-        .page-preview-header > a {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 4px;
+        .container {
+            display: flex;
+            height: calc(100vh - 80px);
         }
 
-        .page-preview-header > a:hover {
-            background: #e2f0fc;
-            text-decoration: none;
+        .input-section {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            border-right: 5px solid #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .page-preview-header > a.active {
-            background: #c9e4f9;
+        .input-section h2 {
+            color: #000;
+            margin-bottom: 20px;
         }
 
-        .page-preview-header > .close {
-            float: right;
-            margin-right: 10px;
+        .input-section form {
+            width: 100%;
+            max-width: 400px;
         }
 
-        .page-preview-body {
-            height: calc(100% - 70px);
-            overflow: hidden;
-            text-align: center;
+        .input-section label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #000;
         }
 
-        .page-preview-body iframe {
+        .input-section input,
+        .input-section select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            background-color: #fff200;
+        }
+
+        .input-section button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: #fff200;
             border: none;
-            display: inline-block;
-            height: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .input-section button:hover {
+            transform: scale(1.05);
+        }
+
+        .visual-section {
+            flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+        }
+
+        .visual-section iframe {
+            width: 90%;
+            height: 90%;
+            border: 5px solid #fff200;
+            border-radius: 10px;
         }
     </style>
-
 </head>
-    <body>
-        
+<body>
+    <header>
+        TAXI DEMAND PREDICTION IN CHICAGO
+    </header>
+    <div class="container">
+        <div class="input-section">
+            <h2>Enter Prediction Details</h2>
+            <form>
+                <label for="zone">Zone</label>
+                <input type="text" id="zone" name="zone" placeholder="Enter zone">
 
+                <label for="year">Year</label>
+                <input type="number" id="year" name="year" placeholder="Enter year">
 
-<div class="page-preview">
-    <div class="page-preview-header">
-        <a class="hidden-sm hidden-xs" href="#" id="previewDesktopBtn" data-preview-size="100%"><img alt="Responsive Desktop Mode" src="//csite.nicepage.com/Images/Site/responsive-desktop.png"></a>
-        <a class="hidden-sm hidden-xs" href="#" id="previewLaptopBtn" data-preview-size="1040px"><img alt="Responsive Laptop Mode" src="//csite.nicepage.com/Images/Site/responsive-laptop.png"></a>
-        <a class="hidden-xs" href="#" id="previewTabletBtn" data-preview-size="820px"><img alt="Responsive Tablet Mode" src="//csite.nicepage.com/Images/Site/responsive-tablet.png"></a>
-        <a class="hidden-xs" href="#" id="previewPhoneHorizontalBtn" data-preview-size="640px"><img alt="Responsive Phone Horizontal Mode" src="//csite.nicepage.com/Images/Site/responsive-phone-horizontal.png"></a>
-        <a class="hidden-xs" href="#" id="previewPhoneBtn" data-preview-size="440px"><img alt="Responsive Phone Mode" src="//csite.nicepage.com/Images/Site/responsive-phone.png"></a>
-        <a class="close" href="/ht/19018/fastest-taxi-cars-html-template"><img alt="Close" src="//csite.nicepage.com/Images/Site/icon-close.png"></a>
+                <label for="month">Month</label>
+                <input type="number" id="month" name="month" placeholder="Enter month">
+
+                <label for="date">Date</label>
+                <input type="number" id="date" name="date" placeholder="Enter date">
+
+                <label for="hour">Hour</label>
+                <input type="number" id="hour" name="hour" placeholder="Enter hour">
+
+                <label for="farePerMile">Fare Per Mile</label>
+                <input type="text" id="farePerMile" name="farePerMile" placeholder="Enter fare per mile">
+
+                <label for="avgFlowSpeed_mph">Average Flow Speed (mph)</label>
+                <input type="text" id="avgFlowSpeed_mph" name="avgFlowSpeed_mph" placeholder="Enter average flow speed">
+
+                <label for="weather_category">Weather Category</label>
+                <input type="text" id="weather_category" name="weather_category" placeholder="Enter weather category">
+
+                <label for="n_minus_1_hour_trips">Trips 1 Hour Ago</label>
+                <input type="number" id="n_minus_1_hour_trips" name="n_minus_1_hour_trips" placeholder="Enter trips 1 hour ago">
+
+                <label for="n_minus_2_hour_trips">Trips 2 Hours Ago</label>
+                <input type="number" id="n_minus_2_hour_trips" name="n_minus_2_hour_trips" placeholder="Enter trips 2 hours ago">
+
+                <label for="n_minus_3_hour_trips">Trips 3 Hours Ago</label>
+                <input type="number" id="n_minus_3_hour_trips" name="n_minus_3_hour_trips" placeholder="Enter trips 3 hours ago">
+
+                <button type="submit">Predict</button>
+            </form>
+        </div>
+        <div class="visual-section">
+            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiMjdkMzM3MTktOTdmMi00Y2Q4LWJkNzEtOGI0YzRkYTMxNTExIiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" frameborder="0" allowfullscreen></iframe>
+        </div>
     </div>
-    <div class="page-preview-body">
-        <iframe id="livePreviewFrame" src="https://taxi.nicepage.io/Page-1.html?version=4be727c6-74b8-41d9-aa15-82d325c5ef5a" width="1057" height="640" style="width:100%;"></iframe>
-    </div>
-</div>
-<a style="position:absolute;top:17px;left:10px;" href="/"><img alt="NicePage.com" src="//csite.nicepage.com/Images/logo-w.png"></a>
-
-        <script>
-            if (window.parent) {
-                var _w = 0, _h = 0;
-                var updateFormSize = function () {
-                    var form = $('form.shaped-form-extended,form.shaped-form');
-                    var w = form.outerWidth(true);
-                    var h = form.outerHeight(true);
-                    if (Math.abs(_w - w) > 5 || Math.abs(_h - h) > 5) {
-                        _w = w;
-                        _h = h;
-                        var msg = { key: 'login-frame-size', width: w, height: h };
-                        window.parent.postMessage(msg, "*");
-                    }
-                    setTimeout(updateFormSize, 300);
-                }
-                updateFormSize();
-            }
-        </script>
-    </body>
+</body>
 </html>
