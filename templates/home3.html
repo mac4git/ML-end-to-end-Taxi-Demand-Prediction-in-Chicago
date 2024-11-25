@@ -1,5 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxi Demand Prediction</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        /* Header */
+        .header {
+            background-color: #000;
+            color: #FFD700;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Input form */
+        .input-section {
+            width: 40%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .input-section h3 {
+            margin: 0 0 20px;
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input {
+            height: 30px;
+        }
+
+        .form-group select {
+            height: 35px;
+        }
+
+        .submit-button {
+            background-color: #FFD700;
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background-color: #000;
+            color: #FFD700;
+        }
+
+        /* Power BI iframe */
+        .iframe-section {
+            width: 55%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .iframe-section iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .output-container {
+            margin-top: 20px;
+            text-align: center;
+            color: #333333;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
 <body>
-    <h2> Visuals </h2>
-    <iframe title="fare per mile visual" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMjdkMzM3MTktOTdmMi00Y2Q4LWJkNzEtOGI0YzRkYTMxNTExIiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" frameborder="0" allowFullScreen="true"></iframe>
-    </body>
-    
+
+    <!-- Header -->
+    <div class="header">
+        TAXI DEMAND PREDICTION IN CHICAGO
+    </div>
+
+    <!-- Main content container -->
+    <div class="container">
+
+        <!-- Input form section -->
+        <div class="input-section">
+            <h3>Enter Prediction Details</h3>
+            <form>
+                <div class="form-group">
+                    <label for="zone">Zone:</label>
+                    <input type="text" id="zone" name="zone">
+                </div>
+                <div class="form-group">
+                    <label for="year">Year:</label>
+                    <input type="number" id="year" name="year">
+                </div>
+                <div class="form-group">
+                    <label for="month">Month:</label>
+                    <input type="number" id="month" name="month">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="number" id="date" name="date">
+                </div>
+                <div class="form-group">
+                    <label for="hour">Hour:</label>
+                    <input type="number" id="hour" name="hour">
+                </div>
+                <button type="submit" class="submit-button">Predict</button>
+            </form>
+        </div>
+
+        <!-- Power BI iframe section -->
+        <div class="iframe-section">
+            <iframe title="trip_visuals" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMDkwM2U5NzUtNzFjNy00MWIxLTg0M2QtMTc4YTY5MDE1Yjc0IiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+
+    </div>
+
+         <!-- Placeholder for displaying the prediction -->
+         {% if prediction %}
+         <div class="output-container">
+             Prediction: {{ prediction }}
+         </div>
+         {% elif error %}
+         <div class="output-container" style="color: red;">
+             Error: {{ error }}
+         </div>
+         {% endif %}
+     </div>   
+</body>
+</html>

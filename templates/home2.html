@@ -104,6 +104,14 @@
             border: none;
             border-radius: 4px;
         }
+
+        .output-container {
+            margin-top: 20px;
+            text-align: center;
+            color: #333333;
+            font-size: 16px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -171,10 +179,21 @@
 
         <!-- Power BI iframe section -->
         <div class="iframe-section">
-            <iframe title="trip_visuals" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMDkwM2U5NzUtNzFjNy00MWIxLTg0M2QtMTc4YTY5MDE1Yjc0IiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" frameborder="0" allowFullScreen="true"></iframe>
+            <iframe title="Trip Power BI Visuals" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMDkwM2U5NzUtNzFjNy00MWIxLTg0M2QtMTc4YTY5MDE1Yjc0IiwidCI6ImQwOTVkYmRkLWVhOWMtNDM5YS1iYWNmLTQyY2FmMTJiYTEzYiJ9" frameborder="0" allowFullScreen="true"></iframe>
         </div>
 
     </div>
 
+         <!-- Placeholder for displaying the prediction -->
+         {% if prediction %}
+         <div class="output-container">
+             Prediction: {{ prediction }}
+         </div>
+         {% elif error %}
+         <div class="output-container" style="color: red;">
+             Error: {{ error }}
+         </div>
+         {% endif %}
+     </div>   
 </body>
 </html>
